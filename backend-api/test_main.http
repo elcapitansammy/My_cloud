@@ -1,0 +1,32 @@
+# Test your FastAPI endpoints
+
+GET http://127.0.0.1:8000/list
+Accept: application/json
+
+###
+
+GET http://127.0.0.1:8000/list?path=genti
+Accept: application/json
+
+###
+
+POST http://127.0.0.1:8000/delete?path=genti/Downloads/IMG_2476.HEIC
+Accept: application/json
+
+###
+
+POST http://127.0.0.1:8000/upload?destination=genti/Downloads/
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="transcript_bachelor.PDF"
+Content-Type: application/pdf
+
+< C:/uni/documents/transcript_bachelor.PDF
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+###
+
+POST http://127.0.0.1:8000/create-directory?path=genti/Downloads/NewFolder
+Accept: application/json
