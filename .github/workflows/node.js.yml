@@ -10,22 +10,37 @@ on:
     branches: [ "main" ]
 
 jobs:
-  vue-build:
+  # -----------------------------
+  # Frontend Vue build job
+  # -----------------------------
+  vue-frontend:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [22.x]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - name: Install dependencies
-      working-directory: front_end_vue
-      run: npm ci
-    - name: Build Vue project
-      working-directory: front_end_vue
-      run: npm run build
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Cache node_modules in front_end_vue/
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: front_end_vue/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('front_end_vue/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        working-directory: front_end_vue
+        run: npm ci
+
+      - name: Build Vue project
+        working-directory: front_end_vue
+        run: npm run build
+
