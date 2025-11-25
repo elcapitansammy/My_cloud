@@ -33,10 +33,10 @@ export default {
     selectItem(item) {
       this.selectedItem = item;
       console.log('Selected item:', item);
-      this.currentPath = item === 'Documents' ? 'T7 FEB1/Documents' :
-                         item === 'Tickets' ? 'T7 FEB1/Tickets' :
-                         item === 'Random' ? 'T7 FEB1/Random' :
-                         item === 'Photos' ? 'T7 FEB1/Photos' : 'T7 FEB1';
+      this.currentPath = item === 'Documents' ? `${this.currentPath}/Documents` :
+                         item === 'Tickets' ? `${this.currentPath}/Tickets` :
+                         item === 'Random' ? `${this.currentPath}/Random` :
+                         item === 'Photos' ? `${this.currentPath}/Photos` : `${this.currentPath}`;
       this.disabled = false;
     },
     handleFileSelect(event) {

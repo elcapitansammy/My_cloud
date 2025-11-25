@@ -20,7 +20,7 @@
   
         <v-main style="height: 100vh; width: 100vw">
             <v-div>
-                <DataTable filePath = "T7 FEB1/Tickets"/>
+                <DataTable :filePath="base_path + '/Tickets'"/>
             </v-div> 
         </v-main>
       </v-layout>
@@ -31,7 +31,8 @@
           rail  -->
 <script>
 let selectedItem = "Default"
-import DataTable from "../components/DataTable.vue"; 
+import DataTable from "../components/DataTable.vue";
+import { BASE_PATH } from "../config"; 
 export default {
   name: 'SideBar',
   components: {
@@ -40,6 +41,7 @@ export default {
   data() {
     return {
       selectedItem: 'tickets', // Default component to show
+      base_path: BASE_PATH,
     };
   },
 };

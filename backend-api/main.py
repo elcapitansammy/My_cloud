@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi import File, UploadFile
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 import os
 import shutil
 from fastapi.middleware.cors import CORSMiddleware
@@ -42,14 +42,18 @@ def read_file(path: str):
 
 @app.get("/download")
 def download_file(path: str):
+    """Return a file without forcing download (preview works)."""
     try:
-        """Download a file relative to BASE_DIR."""
         full_path = os.path.join(BASE_DIR, path)
+
         if not os.path.isfile(full_path):
-            return {"error": "File not found"}
-        return FileResponse(full_path, filename=os.path.basename(full_path))
+            return JSONResponse({"error": "File not found"}, status_code=404)
+
+        # No filename=... → Browser decides (preview allowed)
+        return FileResponse(full_path)
+
     except Exception as e:
-        return {"error": str(e)}
+        return JSONResponse({"error": str(e)}, status_code=500)
 
 
 @app.post("/delete")

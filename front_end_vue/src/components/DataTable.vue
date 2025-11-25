@@ -93,7 +93,31 @@
                 @click="file.isDirectory ? navigateToDirectory(file.path) : null"
                 :style="{ cursor: file.isDirectory ? 'pointer' : 'default' }"
               >
-                <v-img :src="file.img"></v-img>
+                <!-- FILE PREVIEW -->
+                <div>
+                  <!-- Image Preview -->
+                  <v-img
+                    v-if="file.type === 'Image'"
+                    :src="file.url"
+                    height="200"
+                    cover
+                  ></v-img>
+
+                  <!-- PDF Preview -->
+                  <iframe
+                    v-else-if="file.name.toLowerCase().endsWith('.pdf')"
+                    :src="file.url"
+                    style="width: 100%; height: 200px; border: none;"
+                  ></iframe>
+
+                  <!-- Default Icon -->
+                  <v-img
+                    v-else
+                    :src="file.img"
+                    height="200"
+                    cover
+                  ></v-img>
+                </div>
 
                 <v-list-item :subtitle="file.type" class="mb-2">
                   <template v-slot:title>
@@ -291,6 +315,7 @@ import { API_BASE_URL, BASE_PATH } from '../config';
               type: this.getFileType(name, isDirectory),
               isDirectory: isDirectory,
               url: item.url || `${this.apiBaseUrl}/download?path=${encodeURIComponent(item.path || `${this.currentPath}/${name}`)}`,
+              previewType: this.getPreviewType(name),  // PREVIEW TYPE ADDED
               img: this.getFileIcon(name, isDirectory)
             };
           });
@@ -334,6 +359,15 @@ import { API_BASE_URL, BASE_PATH } from '../config';
       changePath(newPath) {
         this.currentPath = newPath;
         this.fetchFiles();
+      },
+      getPreviewType(name) {
+        if (!name) return null;
+        const ext = name.toLowerCase();
+
+        if (ext.match(/\.(jpg|jpeg|png|gif|bmp|webp|svg)$/)) return 'image';
+        if (ext.match(/\.pdf$/)) return 'pdf';
+
+        return null;
       },
       
       navigateToDirectory(dirPath) {
