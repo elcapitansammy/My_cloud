@@ -11,7 +11,10 @@
             </router-link>
             <router-link to="/tickets" class="no-underline">
               <v-list-item prepend-icon="mdi-account-multiple" title="Tickets" @click ="selectedItem = 'DataTable'"></v-list-item>
-            </router-link> 
+            </router-link>
+            <router-link to="/Photos" class="no-underline">
+              <v-list-item prepend-icon="mdi-image" title="Photos" value="photos"></v-list-item>
+            </router-link>
             <router-link to="/rand" class="no-underline">
               <v-list-item prepend-icon="mdi-star" title="Random" value="random"></v-list-item>
             </router-link>

@@ -1,7 +1,7 @@
 <template>
     <v-card>
       <v-layout>
-        <v-navigation-drawer>
+        <v-navigation-drawer permanent>
           <v-list density="compact" nav>
             <router-link to="/" class="no-underline">
               <v-list-item prepend-icon="mdi-plus" title="Upload files" @click ="selectedItem = 'UploadPage'"></v-list-item>
@@ -11,7 +11,7 @@
             </router-link>
             <router-link to="/tickets" class="no-underline">
               <v-list-item prepend-icon="mdi-account-multiple" title="Tickets" @click ="selectedItem = 'DataTable'"></v-list-item>
-            </router-link> 
+            </router-link>
             <router-link to="/Photos" class="no-underline">
               <v-list-item prepend-icon="mdi-image" title="Photos" value="photos"></v-list-item>
             </router-link>
@@ -23,7 +23,7 @@
   
         <v-main style="height: 100vh; width: 100vw">
             <v-div>
-                <DataTable :filePath="base_path + '/Tickets'"/>
+                <DataTable :filePath="base_path+ '/Photos'" ></DataTable>
             </v-div> 
         </v-main>
       </v-layout>
@@ -35,15 +35,16 @@
 <script>
 let selectedItem = "Default"
 import DataTable from "../components/DataTable.vue";
-import { BASE_PATH } from "../config"; 
+import { BASE_PATH } from "../config";
+
 export default {
   name: 'SideBar',
   components: {
-    DataTable // Correctly register UploadPage as a component
+    DataTable
   },
   data() {
     return {
-      selectedItem: 'tickets', // Default component to show
+      selectedItem: 'photos', // Default component to show
       base_path: BASE_PATH,
     };
   },

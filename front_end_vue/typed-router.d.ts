@@ -21,6 +21,7 @@ declare module 'vue-router/auto-routes' {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/Documents': RouteRecordInfo<'/Documents', '/Documents', Record<never, never>, Record<never, never>>,
     '/General': RouteRecordInfo<'/General', '/General', Record<never, never>, Record<never, never>>,
+    '/Photos': RouteRecordInfo<'/Photos', '/Photos', Record<never, never>, Record<never, never>>,
     '/Random': RouteRecordInfo<'/Random', '/Random', Record<never, never>, Record<never, never>>,
     '/Tickets': RouteRecordInfo<'/Tickets', '/Tickets', Record<never, never>, Record<never, never>>,
   }
@@ -46,6 +47,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/General.vue': {
       routes: '/General'
+      views: never
+    }
+    'src/pages/Photos.vue': {
+      routes: '/Photos'
       views: never
     }
     'src/pages/Random.vue': {
