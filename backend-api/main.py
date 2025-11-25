@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-BASE_DIR = "C:/Users"  # safe base directory
+BASE_DIR = "/media"  # safe base directory
 
 app.add_middleware(
     CORSMiddleware,

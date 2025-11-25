@@ -20,7 +20,7 @@
   
         <v-main style="height: 100vh; width: 100vw">
             <v-div>
-                <DataTable filePath = "genti/Tickets"/>
+                <DataTable filePath = "T7 FEB1/Tickets"/>
             </v-div> 
         </v-main>
       </v-layout>

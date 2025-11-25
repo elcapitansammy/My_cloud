@@ -20,7 +20,7 @@
   
         <v-main style="height: 100vh; width: 100vw">
             <v-div>
-                <DataTable filePath = "genti" ></DataTable>
+                <DataTable filePath = "T7 FEB1" ></DataTable>
             </v-div> 
         </v-main>
       </v-layout>
@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       selectedItem: 'documents', // Default component to show
+      
     };
   },
 };
