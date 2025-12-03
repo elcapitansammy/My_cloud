@@ -110,6 +110,13 @@
                     style="width: 100%; height: 200px; border: none;"
                   ></iframe>
 
+                  <v-img
+                    v-else-if="file.type === 'Video'"
+                    :src="`${apiBaseUrl}/thumbnail?path=${encodeURIComponent(file.path)}`"
+                    height="200"
+                    cover
+                  ></v-img>
+
                   <!-- Default Icon -->
                   <v-img
                     v-else

@@ -1,3 +1,4 @@
+import cv2
 from fastapi import FastAPI
 from fastapi import File, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
@@ -7,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-BASE_DIR = "/media"  # safe base directory
+BASE_DIR = "C:/Users"  # safe base directory
 
 app.add_middleware(
     CORSMiddleware,
@@ -84,8 +85,43 @@ async def upload_file(file: UploadFile = File(...), destination: str = ""):
         return {"status": "File uploaded", "filename": file.filename, "destination": destination_path}
     except Exception as e:
         return {"error": str(e)}
+    
+import tempfile
 
 
+@app.get("/thumbnail")
+def generate_thumbnail(path: str):
+    try:
+        full_path = os.path.join(BASE_DIR, path)
+
+        if not os.path.isfile(full_path):
+            return JSONResponse({"error": "File not found"}, status_code=404)
+
+        ext = path.split(".")[-1].lower()
+        if ext not in ["mp4", "mov", "avi", "mkv", "webm"]:
+            return JSONResponse({"error": "Not a video"}, status_code=400)
+
+        # Store thumbnails in a fixed cache folder inside BASE_DIR
+        thumb_path = os.path.join(tempfile.gettempdir(), path.replace("/", "_") + ".png")
+        os.makedirs(os.path.dirname(thumb_path), exist_ok=True)
+
+        # Generate only if it doesn’t exist yet
+        if not os.path.isfile(thumb_path):
+            video = cv2.VideoCapture(full_path)
+            video.set(cv2.CAP_PROP_POS_MSEC, 500)  # 0.5 second frame
+            success, frame = video.read()
+            if success:
+                cv2.imwrite(thumb_path, frame)
+            video.release()
+
+        if not os.path.isfile(thumb_path):
+            return JSONResponse({"error": "Could not generate thumbnail"}, status_code=500)
+
+        return FileResponse(thumb_path)
+
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+    
 @app.post("/create-directory")
 def create_directory(path: str):
     try:
