@@ -11,6 +11,10 @@
         label="Select Category" v-model="selectedItem" @update:modelValue="selectItem"
         :items="['Documents', 'Tickets','Random', 'Photos']">
         </v-select>
+        <v-select style="padding-top: 5%;"
+        label="Select User" v-model="selectedUser" @update:modelValue="selectUser"
+        :items="['Samuele', 'Daniel', 'Mamma', 'Nicolas', 'Babbo']">
+        </v-select>
           <v-btn class="mt-5" @click="uploadFiles" :disabled="disabled">
          Upload Files on {{ currentPath }}
        </v-btn>
@@ -24,20 +28,40 @@ export default {
     return {
       selectedFiles: [],
       selectedItem: null,
-      uploading: false, 
-      currentPath: BASE_PATH, // Default upload path
+      selectedUser: null,
+      uploading: null,
+      basePath: BASE_PATH, // Default upload path
       disabled: true
+    }
+  },
+    computed: {
+    // Current path is always Category/User
+    currentPath() {
+      if (this.selectedItem && this.selectedUser) {
+        return `${this.basePath}/${this.selectedItem}/${this.selectedUser}`;
+      } else if (this.selectedItem) {
+        return `${this.basePath}/${this.selectedItem}`;
+      } else if (this.selectedUser) {
+        return `${this.basePath}/${this.selectedUser}`;
+      } else {
+        return this.basePath;
+      }
+    },
+    disabled() {
+      // Upload button enabled only if both category and user are selected
+      return !(this.selectedItem && this.selectedUser && this.selectedFiles.length > 0);
     }
   },
   methods: {
     selectItem(item) {
       this.selectedItem = item;
-      console.log('Selected item:', item);
-      this.currentPath = item === 'Documents' ? `${this.currentPath}/Documents` :
-                         item === 'Tickets' ? `${this.currentPath}/Tickets` :
-                         item === 'Random' ? `${this.currentPath}/Random` :
-                         item === 'Photos' ? `${this.currentPath}/Photos` : `${this.currentPath}`;
-      this.disabled = false;
+      // Reset user if needed
+      if (this.selectedUser) this.selectedUser = null;
+      console.log('Selected category:', item);
+    },
+    selectUser(user) {
+      this.selectedUser = user;
+      console.log('Selected user:', user);
     },
     handleFileSelect(event) {
       this.selectedFiles = Array.from(event.target.files);
@@ -57,6 +81,7 @@ export default {
       this.selectedFiles = [];
       this.$refs.fileInput.value = '';
       this.disabled = false;
+      alert("All files uploaded successfully!");
     },
     
     async uploadSingleFile(file) {
